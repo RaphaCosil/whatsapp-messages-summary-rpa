@@ -17,24 +17,6 @@ Com o uso do **Selenium** como RPA (Robotic Process Automation), a ferramenta pe
 - Envio automatizado das mensagens para os professores via e-mail, WhatsApp ou outro canal de comunicação
 - Logs das mensagens enviadas para rastreamento
 
-## Como Utilizar
-1. **Configuração Inicial:**
-   - Instale as dependências do projeto:
-     ```bash
-     pip install selenium
-     ```
-   - Configure o WebDriver compatível com o navegador utilizado.
-
-2. **Execução da Automação:**
-   - Execute o script principal:
-     ```bash
-     python main.py
-     ```
-   - O RPA capturará as mensagens e as enviará automaticamente para os professores.
-
-3. **Agendamento Automático:**
-   - Para evitar execuções manuais, configure um **cronjob** (Linux/macOS) ou **Task Scheduler** (Windows) para rodar o script automaticamente.
-
 ## Contribuição
 Caso queira contribuir para o projeto, siga os passos:
 1. Faça um fork do repositório
