@@ -12,19 +12,6 @@ Com o uso do **Selenium** como RPA (Robotic Process Automation), a ferramenta pe
 - **Agendamento de Tarefas (Cronjobs ou Task Scheduler)**
 
 ## Funcionalidades
-- Captura das mensagens enviadas pelos alunos (via formulário, chatbot ou outro meio de comunicação)
+- Captura das mensagens enviadas pelos alunos (via Whatsapp)
 - Processamento e organização das mensagens
-- Envio automatizado das mensagens para os professores via e-mail, WhatsApp ou outro canal de comunicação
-- Logs das mensagens enviadas para rastreamento
-
-## Contribuição
-Caso queira contribuir para o projeto, siga os passos:
-1. Faça um fork do repositório
-2. Crie uma branch com sua feature (`git checkout -b feature/nova-feature`)
-3. Commit suas alterações (`git commit -m 'Adiciona nova feature'`)
-4. Faça um push para a branch (`git push origin feature/nova-feature`)
-5. Abra um Pull Request
-
-## Licença
-Este projeto está sob a licença MIT. Sinta-se à vontade para usá-lo e modificá-lo conforme necessário.
-
+- Envio automatizado das mensagens para os professores via WhatsApp
