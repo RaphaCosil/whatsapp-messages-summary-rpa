@@ -44,8 +44,6 @@ def get_all_messages():
     return all_msgs
 
 def get_messages_after_reference(messages, reference):
-    print(messages)
-    print(reference)
     if reference in messages:
         inverted_position = messages[::-1].index(reference)
         last_index = len(messages) - 1 - inverted_position
@@ -64,7 +62,6 @@ def format_messages_as_list(messages):
     for i in messages:
         formatted_message += f"• {i} "        
 
-    print(formatted_message)
     return formatted_message
 
 def send_message(destination, message):
@@ -93,8 +90,6 @@ def close_whatsapp_and_browser():
     driver.quit()
     print("WhatsApp Web and browser closed successfully.")
 
-
-
 def main():
     open_conversation(group_origin)
 
@@ -109,12 +104,12 @@ def main():
     print(f"{len(collected_messages)} new messages captured.")
 
     collected_messages = get_messages_after_reference(collected_messages, reference)
-    print(f"{len(collected_messages)} new messages after the reference.")
 
     collected_messages = filter_messages(collected_messages, filter)
-    print(f"{len(collected_messages)} new messages after the filter.")
 
     collected_messages = format_messages_as_list(collected_messages)
+    
+    print(f"Filtered messages: {collected_messages}")
 
     if not collected_messages:
         print("No new messages found after the filter!")
@@ -123,7 +118,7 @@ def main():
 
     print(collected_messages)
 
-    send_message(group_origin, "Ok! Já avisei os professores")
+    send_message(group_origin, reference)
 
     open_new_whatsapp_tab_and_send_message(group_destination, message, collected_messages)
 
