@@ -54,7 +54,6 @@ Edite as variáveis no código conforme necessário:
   message = "Esses alunos faltaram ou chegarão atrasados"
   reference = "Ok! Já avisei os professores"
   filter = ["3", "3°"]
-
 ```
 
 ## Execução
@@ -63,7 +62,6 @@ Execute o script com:
 
 ```
 python script.py
-
 ```
 
 ## Como funciona
