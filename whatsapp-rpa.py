@@ -29,32 +29,32 @@ def open_conversation(contact_name):
     time.sleep(2)
     search_box.send_keys(Keys.RETURN)
     time.sleep(3)
-
-def get_messages_after_reference(reference):
+            
+def get_all_messages():
+    all_msgs = []
     msg_elements = driver.find_elements(By.XPATH, "//div[contains(@class, 'message-in') or contains(@class, 'message-out')]")
-    
-    last_ocurrence = -1
-    for i, msg in enumerate(msg_elements):
+
+    for msg in msg_elements:
         try:
-            text = msg.find_element(By.XPATH, ".//span[contains(@class, 'selectable-text')]").text
-            if text == reference:
-                last_ocurrence = i
+            text = msg.find_element(By.XPATH, ".//span[contains(@class, 'selectable-text')]").text.strip()
+            all_msgs.append(text)
         except:
             continue
 
-    if last_ocurrence != -1:
-        all_msgs = []
-        for msg in msg_elements[last_ocurrence + 1:]:
-            try:
-                text = msg.find_element(By.XPATH, ".//span[contains(@class, 'selectable-text')]").text
-                all_msgs.append(text)
-            except:
-                continue
-        
     return all_msgs
 
-def filter_messages(messages, filter):
-    return [msg for msg in messages if any(f in msg for f in filter)]
+def get_messages_after_reference(messages, reference):
+    print(messages)
+    print(reference)
+    if reference in messages:
+        inverted_position = messages[::-1].index(reference)
+        last_index = len(messages) - 1 - inverted_position
+        return messages[last_index + 1:]
+    else:
+        return []
+
+def filter_messages(messages, filters):
+        return [msg for msg in messages if any(f in msg for f in filters)]
 
 def format_messages_as_list(messages):
     if not messages:
@@ -81,7 +81,7 @@ def send_message(destination, message):
 
 def open_new_whatsapp_tab_and_send_message(group_name, message, collected_messages):
     driver.execute_script("window.open('https://web.whatsapp.com');")
-    time.sleep(5)
+    time.sleep(15)
     
     driver.switch_to.window(driver.window_handles[-1])
 
@@ -93,23 +93,41 @@ def close_whatsapp_and_browser():
     driver.quit()
     print("WhatsApp Web and browser closed successfully.")
 
-open_conversation(group_origin)
 
-collected_messages = get_messages_after_reference(reference)
 
-print(collected_messages)
+def main():
+    open_conversation(group_origin)
 
-if not collected_messages:
-    print("No new messages found after the last reference!")
-    driver.quit()
-    exit()
+    collected_messages = get_all_messages()
+    print(collected_messages)
 
-print(f"{len(collected_messages)} new messages captured.")
+    if not collected_messages:
+        print("No new messages found after the last reference!")
+        driver.quit()
+        exit()
 
-formatted_message = format_messages_as_list(filter_messages(collected_messages, filter))
+    print(f"{len(collected_messages)} new messages captured.")
 
-send_message(group_origin, "Ok! Já avisei os professores")
+    collected_messages = get_messages_after_reference(collected_messages, reference)
+    print(f"{len(collected_messages)} new messages after the reference.")
 
-open_new_whatsapp_tab_and_send_message(group_destination, message, format_messages_as_list)
+    collected_messages = filter_messages(collected_messages, filter)
+    print(f"{len(collected_messages)} new messages after the filter.")
 
-close_whatsapp_and_browser()
+    collected_messages = format_messages_as_list(collected_messages)
+
+    if not collected_messages:
+        print("No new messages found after the filter!")
+        driver.quit()
+        exit()
+
+    print(collected_messages)
+
+    send_message(group_origin, "Ok! Já avisei os professores")
+
+    open_new_whatsapp_tab_and_send_message(group_destination, message, collected_messages)
+
+    close_whatsapp_and_browser()
+        
+if __name__ == "__main__":
+    main()
