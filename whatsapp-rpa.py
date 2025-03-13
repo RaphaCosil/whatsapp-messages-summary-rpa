@@ -4,6 +4,7 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
 import time
+import unicodedata
 
 options = webdriver.ChromeOptions()
 options.add_argument("--disable-dev-shm-usage")
@@ -40,51 +41,67 @@ def get_all_messages():
             all_msgs.append(text)
         except:
             continue
-
+    
     return all_msgs
 
+def normalize_text(text):
+    return unicodedata.normalize("NFKC", text).strip().lower()
+
+
 def get_messages_after_reference(messages, reference):
-    if reference in messages:
-        inverted_position = messages[::-1].index(reference)
-        last_index = len(messages) - 1 - inverted_position
-        return messages[last_index + 1:]
-    else:
+    reference = normalize_text(reference)
+    normalized_messages = [normalize_text(msg) for msg in messages]
+    
+    try:
+        last_index = len(normalized_messages) - 1 - normalized_messages[::-1].index(reference)
+    except ValueError:
+        print("Referência não encontrada.")
         return []
+    
+    return messages[last_index + 1:]
 
 def filter_messages(messages, filters):
         return [msg for msg in messages if any(f in msg for f in filters)]
 
-def format_messages_as_list(messages):
-    if not messages:
-        return None
+# def format_messages_as_list(messages):
+    # if not messages:
+    #     return None
 
-    formatted_message = ""
-    for i in messages:
-        formatted_message += f"• {i} "        
+    # formatted_message = ""
+    # for i in messages:
+    #     print(f"i = {i}")
+    #     formatted_message += f"• {i} " 
 
-    return formatted_message
+    # return formatted_message
 
-def send_message(destination, message):
-    open_conversation(destination)
+def send_message(message, destination=None):  # destination é opcional
+    if destination:  # Só abre a conversa se o destino for fornecido
+        open_conversation(destination)
+    
     try:
         input_box = driver.find_element(By.XPATH, "//div[@contenteditable='true' and @data-tab='10']")
         input_box.send_keys(message)
         time.sleep(1)
         input_box.send_keys(Keys.RETURN)
         time.sleep(1)
-        print(f"Message sent successfully to {destination}!")
+        print(f"Message sent successfully to {destination if destination else 'current chat'}!")
     except Exception as e:
-        print(f"Error sending message to {destination}: {e}")
+        print(f"Error: {e}")
 
 def open_new_whatsapp_tab_and_send_message(group_name, message, collected_messages):
     driver.execute_script("window.open('https://web.whatsapp.com');")
     time.sleep(15)
-    
+
+    print(f"mensagem coletadas: {collected_messages}")
+
     driver.switch_to.window(driver.window_handles[-1])
 
     open_conversation(group_name)
-    send_message(group_name, message)
-    send_message(group_name, collected_messages)
+
+    for msg in collected_messages:
+        send_message(msg)
+
+    send_message(message)
 
 def close_whatsapp_and_browser():
     driver.quit()
@@ -94,29 +111,20 @@ def main():
     open_conversation(group_origin)
 
     collected_messages = get_all_messages()
-    print(collected_messages)
 
     if not collected_messages:
         print("No new messages found after the last reference!")
         driver.quit()
         exit()
 
-    print(f"{len(collected_messages)} new messages captured.")
-
     collected_messages = get_messages_after_reference(collected_messages, reference)
 
     collected_messages = filter_messages(collected_messages, filter)
-
-    collected_messages = format_messages_as_list(collected_messages)
     
-    print(f"Filtered messages: {collected_messages}")
-
     if not collected_messages:
         print("No new messages found after the filter!")
         driver.quit()
         exit()
-
-    print(collected_messages)
 
     send_message(group_origin, reference)
 
