@@ -1,17 +1,77 @@
-# Automação de Envio de Mensagens para Professores
+# Message Sending Automation
 
-## Descrição
-Este projeto tem como objetivo automatizar o processo de comunicação entre alunos e professores sobre atrasos e faltas nas aulas. Atualmente, a coordenadora do curso, Fe Godoy, realiza essa tarefa manualmente todos os dias, repassando as mensagens dos alunos para os professores.
+This project aims to automate communication about student delays and absences, reducing the manual effort of coordination and ensuring fast message delivery to teachers.
 
-Com o uso do **Selenium** como RPA (Robotic Process Automation), a ferramenta permitirá que esse processo seja realizado de forma automática, reduzindo o esforço manual e garantindo que as mensagens sejam enviadas de maneira rápida e eficiente.
+## Technologies
 
-## Tecnologias Utilizadas
-- **Python**
-- **Selenium**
-- **WebDriver** (Chrome ou Firefox)
-- **Agendamento de Tarefas (Cronjobs ou Task Scheduler)**
+- Python  
+- Selenium  
+- WebDriver (Chrome)  
+- Task Scheduling (Cronjobs or Task Scheduler)  
 
-## Funcionalidades
-- Captura das mensagens enviadas pelos alunos (via Whatsapp)
-- Processamento e organização das mensagens
-- Envio automatizado das mensagens para os professores via WhatsApp
+## Features
+
+- Captures messages sent by students via WhatsApp  
+- Processes and filters messages  
+- Automatically sends messages to teachers  
+- Sends a confirmation message in the original group  
+
+## Requirements
+
+- Python 3.x  
+- Google Chrome installed  
+- WebDriver for Chrome (automatically managed by `webdriver-manager`)  
+- Required libraries:  
+
+  `selenium`  
+
+  `webdriver-manager`  
+
+## Installation
+
+1. Clone the repository:  
+
+    ```
+    git clone https://github.com/youruser/whatsapp-automation.git
+    cd whatsapp-automation
+    ```
+
+2. Install dependencies:  
+
+    ```
+    pip install -r requirements.txt
+    ```
+
+## Configuration
+
+Edit the variables in the code as needed:
+
+```python
+  group_origin = "Grupo 2"
+  group_destination = "Grupo Destino"
+  message = "Esses alunos faltaram ou chegarão atrasados"
+  reference = "Ok! Já avisei os professores"
+  filter = ["3", "3°"]
+```
+
+## Execution
+
+Run the script with:
+
+```
+python script.py
+```
+
+## How It Works
+
+1. The script opens WhatsApp Web in the browser  
+2. The user scans the QR Code  
+3. The script collects, filters, and processes messages  
+4. The filtered messages are sent to the destination group  
+5. The script sends a confirmation message in the original group  
+6. WhatsApp Web is automatically closed  
+
+## Notes
+
+- WhatsApp Web may detect automation and restrict usage  
+- Adjust wait times (`time.sleep()`) as needed  
