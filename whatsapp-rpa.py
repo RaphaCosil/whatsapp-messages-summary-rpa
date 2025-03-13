@@ -74,8 +74,8 @@ def filter_messages(messages, filters):
 
     # return formatted_message
 
-def send_message(message, destination=None):  # destination é opcional
-    if destination:  # Só abre a conversa se o destino for fornecido
+def send_message(message, destination=None):
+    if destination: 
         open_conversation(destination)
     
     try:
