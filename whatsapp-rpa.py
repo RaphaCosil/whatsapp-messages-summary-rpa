@@ -15,7 +15,7 @@ group_origin = "Grupo 2"
 group_destination = "Grupo Destino"
 message = "Esses alunos faltaram ou chegarão atrasados"
 reference = "Ok! Já avisei os professores"
-filter = ["3", "3°"]
+filter = ["3E", "3°E", "3F", "3°F", "3G", "3°G", "3H", "3°H" ]
 
 service = Service(ChromeDriverManager().install())
 driver = webdriver.Chrome(service=service, options=options)
@@ -126,7 +126,7 @@ def main():
         driver.quit()
         exit()
 
-    send_message(group_origin, reference)
+    send_message(reference, group_origin)
 
     open_new_whatsapp_tab_and_send_message(group_destination, message, collected_messages)
 
