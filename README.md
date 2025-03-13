@@ -1,6 +1,6 @@
 # Message Sending Automation
 
-This project aims to automate communication about student delays and absences, reducing the manual effort of coordination and ensuring fast message delivery to teachers.
+This project automates communication regarding student delays and absences, reducing manual coordination efforts and ensuring fast message delivery to teachers.
 
 ## Technologies
 
@@ -23,22 +23,22 @@ This project aims to automate communication about student delays and absences, r
 - WebDriver for Chrome (automatically managed by `webdriver-manager`)  
 - Required libraries:  
 
-  `selenium`  
-
-  `webdriver-manager`  
+  ```sh
+  pip install selenium webdriver-manager
+  ```
 
 ## Installation
 
 1. Clone the repository:  
 
-    ```
+    ```sh
     git clone https://github.com/youruser/whatsapp-automation.git
     cd whatsapp-automation
     ```
 
 2. Install dependencies:  
 
-    ```
+    ```sh
     pip install -r requirements.txt
     ```
 
@@ -51,14 +51,14 @@ Edit the variables in the code as needed:
   group_destination = "Grupo Destino"
   message = "Esses alunos faltaram ou chegarão atrasados"
   reference = "Ok! Já avisei os professores"
-  filter = ["3", "3°"]
+  filter = ["3E", "3°E", "3F", "3°F", "3G", "3°G", "3H", "3°H"]
 ```
 
 ## Execution
 
 Run the script with:
 
-```
+```sh
 python script.py
 ```
 
